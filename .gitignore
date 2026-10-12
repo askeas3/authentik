@@ -1,0 +1,12 @@
+# Sensitive Data
+.env*
+
+# SSL/Traefik
+certs/
+acme.json
+secrets/
+
+# Database & Runtime Data
+postgres/
+redis/
+media/
