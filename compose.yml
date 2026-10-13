@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
     volumes:
     - database:/var/lib/postgresql/data
-  server:
+  authentik:
     command: server
     depends_on:
       postgresql:
@@ -37,10 +37,13 @@ services:
     - ${COMPOSE_PORT_HTTPS:-9443}:9443
     restart: unless-stopped
     shm_size: 512mb
+    networks: #added for traefik
+      - proxy-net
+      - default #need to assign because we added proxy-net
     volumes:
     - ./data:/data
     - ./custom-templates:/templates
-    labels:
+    labels: #added for traefik
       - traefik.enable=true
       - traefik.http.routers.authentik.tls=true
       - traefik.http.routers.authentik.entrypoints=websecure
@@ -70,3 +73,7 @@ services:
 volumes:
   database:
     driver: local
+
+networks: #added for traefik
+  proxy-net:
+    external: true
